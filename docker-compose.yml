@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./qrgen.db
+      - SECRET_KEY=${SECRET_KEY:-changeme}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - BASE_URL=${BASE_URL:-http://localhost:8000}
+      - QR_STORAGE_PATH=./storage/qrcodes
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - ./storage:/app/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
