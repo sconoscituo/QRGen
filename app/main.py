@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 import os
 from app.config import settings
 from app.database import init_db
-from app.routers import users, qrcodes, payments
+from app.routers import users, qrcodes, payments, analytics
 
 
 @asynccontextmanager
@@ -33,6 +33,7 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(qrcodes.router)
 app.include_router(payments.router)
+app.include_router(analytics.router, prefix="/api/v1")
 
 
 @app.get("/")
